@@ -10,7 +10,125 @@
       isMobile = true;
   }
 
- 
+  // create dimensions
+  let width = isMobile ? window.innerWidth * 0.95 : window.innerWidth * 0.8
+  let height = window.innerHeight * 0.85
+
+  
+
+  // Configuration - constant value
+  const data = $payFormattedData
+
+  // - data accessor
+  const xAccessor = d => d["pay_median_108"]
+  const yAccessor = d => d["產業類別"]
+
+  // draw
+  onMount(() => {
+
+    const dimensions = {
+      width: width,
+      height: height,
+      margin: {
+        top: 10,
+        right: 0.06 * width,
+        bottom: 10,
+        left: 0.06 * width,
+      },
+    }
+
+    dimensions.boundWidth = dimensions.width 
+      - dimensions.margin.left
+      - dimensions.margin.right
+
+    dimensions.boundHeight = dimensions.height
+      - dimensions.margin.top
+      - dimensions.margin.bottom
+
+      const wrapper = d3.select('#canvas')
+        .attr("width", dimensions.width)
+        .attr("height", dimensions.height)
+
+      const bounds = wrapper.append("g")
+      .style("transform", `translate(${
+              dimensions.margin.left
+            }px, ${
+              dimensions.margin.top
+            }px)`)
+
+      // - scales
+      const x = d3.scaleLinear()
+        .domain(d3.extent(data, xAccessor))
+        .range([dimensions.margin.left*2, dimensions.boundWidth - dimensions.margin.right])
+
+      const y = d3.scaleBand()
+        .domain(data.map(yAccessor))
+        .rangeRound([dimensions.margin.top, dimensions.boundHeight - dimensions.margin.bottom])
+        .padding(0.1)
+
+      // - axis
+      const xAxis = g => g
+        .attr("transform", `translate(0,${dimensions.margin.top})`)
+        .call(d3.axisTop(x).ticks(null))
+        .call(g => g.selectAll(".tick line")
+                    .clone()
+                    .attr("stroke-opacity", 0.1)
+                    .attr("y2", dimensions.boundHeight - dimensions.margin.bottom - dimensions.margin.top))
+        .call(g => g.selectAll(".domain").remove())
+        .call(g => g.selectAll("text")
+                    .attr("font-family", "Noto Sans TC")
+                    .attr("font-size", isMobile ? 9 : 15))
+        .call(g => g.selectAll("line:first-child")
+                    .remove())
+
+      const yAxis = g => g
+        .attr("transform", `translate(${dimensions.margin.left*2},0)`)
+        .call(d3.axisLeft(y))
+        .call(g => g.selectAll(".tick line")
+                    .clone()
+                    .attr("stroke-opacity", 0.1)
+                    .attr("x2", dimensions.boundWidth - dimensions.margin.right - dimensions.margin.left))
+        .call(g => g.selectAll(".domain")
+                    .remove())
+        .call(g => g.selectAll("text")
+                    .attr("font-family", "Noto Sans TC")
+                    .attr("font-size", isMobile ? 10 : 12))
+        .call(g => g.selectAll("line:first-child")
+                    .remove())
+
+    // draw barcode
+    bounds.append("g")
+        .attr("stroke-width", 10)
+        .attr("pointer-events", "all")
+        .selectAll("rect")
+      .data(data)
+      .enter()
+        .append("rect")
+        .attr("fill", "#3F7FBF")
+        .attr("id", d => d["公司名稱"])
+        .attr("x", d => x(d["pay_median_108"]) - 0.75)
+        .attr("y", d => y(d["產業類別"]))
+        .attr("width", isMobile ? 1 : 1.5)
+        .attr("height", y.bandwidth())
+        .attr("opacity", 0.7)
+      .append("title")
+        .text(d => `${d["公司名稱"]} ${(d["pay_median_108"]).toFixed(1)}k ${d["產業類別"]}`)
+
+    bounds.append("g")
+        .call(xAxis);
+
+    bounds.append("g")
+        .call(yAxis);
+
+    // set steop needed value to empty store
+    const AddedArgs = {isMobile}
+
+    helperArgs.update(d => {
+            return AddedArgs;
+        });
+
+    
+  }) 
   
 </script>
 
@@ -24,5 +142,51 @@
 <style>
   svg {
     z-index: 2;
+  }
+
+
+  /* css reset */
+  html, body, div, span, applet, object, iframe,
+  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+  a, abbr, acronym, address, big, cite, code,
+  del, dfn, em, img, ins, kbd, q, s, samp,
+  small, strike, strong, sub, sup, tt, var,
+  b, u, i, center,
+  dl, dt, dd, ol, ul, li,
+  fieldset, form, label, legend,
+  table, caption, tbody, tfoot, thead, tr, th, td,
+  article, aside, canvas, details, embed, 
+  figure, figcaption, footer, header, hgroup, 
+  menu, nav, output, ruby, section, summary,
+  time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+  }
+  /* HTML5 display-role reset for older browsers */
+  article, aside, details, figcaption, figure, 
+  footer, header, hgroup, menu, nav, section {
+    display: block;
+  }
+  body {
+    line-height: 1;
+  }
+  ol, ul {
+    list-style: none;
+  }
+  blockquote, q {
+    quotes: none;
+  }
+  blockquote:before, blockquote:after,
+  q:before, q:after {
+    content: '';
+    content: none;
+  }
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
   }
 </style>
