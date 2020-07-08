@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { payFormattedData, helperArgs } from "../stores/PayData108.js";
+  import { payFormattedData, helperArgs, medianListedTop10, medianOTCTop10, medianListedLast10, medianOTCLast10 } from "../stores/PayData108.js";
   import * as d3 from "d3";
 
   let isMobile = false; //initiate as false
@@ -18,6 +18,10 @@
 
   // Configuration - constant value
   const data = $payFormattedData
+  const top10List = {medianListedTop10: $medianListedTop10, 
+                     medianOTCTop10: $medianOTCTop10,
+                     medianListedLast10: $medianListedLast10,
+                     medianOTCLast10: $medianOTCLast10}
 
   // - data accessor
   const xAccessor = d => d["pay_median_108"]
@@ -69,6 +73,8 @@
       // - axis
       const xAxis = g => g
         .attr("transform", `translate(0,${dimensions.margin.top})`)
+        .attr("class", "x-axis")
+        .attr("opacity", 0)
         .call(d3.axisTop(x).ticks(null))
         .call(g => g.selectAll(".tick line")
                     .clone()
@@ -82,7 +88,9 @@
                     .remove())
 
       const yAxis = g => g
-        .attr("transform", `translate(${dimensions.margin.left*2},0)`)
+        .attr("transform", `translate(${dimensions.margin.left * 2},0)`)
+        .attr("class", "y-axis")
+        .attr("opacity", 0)
         .call(d3.axisLeft(y))
         .call(g => g.selectAll(".tick line")
                     .clone()
@@ -98,21 +106,25 @@
 
     // draw barcode
     bounds.append("g")
+        .attr("class", "companies")
         .attr("stroke-width", 10)
         .attr("pointer-events", "all")
         .selectAll("rect")
       .data(data)
       .enter()
         .append("rect")
-        .attr("fill", "#3F7FBF")
+        .attr("class", "company")
+        .attr("fill", d => d["type"] === "listed" ? "#046EB7" : "#CF7942")
+        .attr("opacity", 0)
         .attr("id", d => d["公司名稱"])
         .attr("x", d => x(d["pay_median_108"]) - 0.75)
         .attr("y", d => y(d["產業類別"]))
         .attr("width", isMobile ? 1 : 1.5)
         .attr("height", y.bandwidth())
-        .attr("opacity", 0.7)
       .append("title")
         .text(d => `${d["公司名稱"]} ${(d["pay_median_108"]).toFixed(1)}k ${d["產業類別"]}`)
+    
+    let companies = d3.selectAll(".company")
 
     bounds.append("g")
         .call(xAxis);
@@ -121,7 +133,7 @@
         .call(yAxis);
 
     // set steop needed value to empty store
-    const AddedArgs = {isMobile}
+    const AddedArgs = {isMobile, companies, top10List}
 
     helperArgs.update(d => {
             return AddedArgs;

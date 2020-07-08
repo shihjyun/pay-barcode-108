@@ -9,7 +9,7 @@
 		<HeaderCover/>
 		<h3>副標副標副標副標副標</h3>
 		<p class="tiny-word">製作：Steven Yeo</p>
-		<p class="tiny-word">資料來源：<a href="https://www.cec.gov.tw/" target="_blank">中選會</a></p>
+		<p class="tiny-word">資料來源：<a href="https://mops.twse.com.tw/mops/web/t146sb05" target="_blank">公開資訊觀測站</a></p>
 	</header>
 	<section>
 		<p class="content">昨從去年開始，金管會要求所有上市櫃公司必須揭露非主管員工「平均薪資」及「薪資總額」，讓企業資訊變得更加透明、強化企業社會責任。但平均薪資較易受極端值影響，無法客觀看出一家公司的薪資水平。因此，金管會也在今年強制要求上市櫃公司，公開非主管全時員工的「薪資中位數」，希望能消彌平均薪資代表性不足的情況。</p>
