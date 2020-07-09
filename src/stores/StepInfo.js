@@ -1,5 +1,6 @@
 import { readable } from "svelte/store";
 import * as d3 from "d3";
+import * as d3Annotation from 'd3-svg-annotation';
 
 export const stepInfo = readable([
   {
@@ -139,6 +140,9 @@ export const stepInfo = readable([
             return 1
           }
         })
+
+      d3.selectAll(".step-5-annotation")
+        .style("opacity", 0)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -167,6 +171,12 @@ export const stepInfo = readable([
             return 1
           }
         })
+        
+        d3.select(".step-5-annotation")
+          .transition(500)
+          .style("opacity", 1)
+
+        
       
     },
     stepEnterUp: function(...Arg){
@@ -189,6 +199,14 @@ export const stepInfo = readable([
             return 1
           }
         })
+
+      d3.select(".step-5-annotation")
+        .transition(500)
+        .style("opacity", 1)
+
+      d3.select(".step-6-annotation")
+        .transition(500)
+        .style("opacity", 0)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -216,6 +234,14 @@ export const stepInfo = readable([
             return 1
           }
         })
+
+      d3.select(".step-6-annotation")
+        .transition(500)
+        .style("opacity", 1)
+
+      d3.select(".step-5-annotation")
+        .transition(500)
+        .style("opacity", 0)
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
@@ -236,6 +262,14 @@ export const stepInfo = readable([
             return 1
           }
         })
+
+      d3.select(".step-6-annotation")
+        .transition(500)
+        .style("opacity", 1)
+
+      d3.select(".step-5-annotation")
+        .transition(500)
+        .style("opacity", 0)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -243,11 +277,15 @@ export const stepInfo = readable([
   {
     step: 7,
     subTitle: false,
-    content: `而金管會也要求「薪資平均數」低於50萬的公司，上市、上櫃共135家，提出公司經營績效與員工薪酬的關聯性說明。(說明待補)`,
+    content: `而針對低薪公司，金管會也要求「薪資平均數」低於50萬共135家公司，於資料中一併提出低相關說明，解釋為何薪資為何較低，是否與公司經營績效公司經營績效有關係。`,
     stepEnterDown: function(...Arg){
       Arg[0].companies
         .transition()
         .style("fill", d => d["pay_mean_lower_50"] ? "#F7717D" : "#DAD7DA")
+
+      d3.select(".step-6-annotation")
+        .transition(500)
+        .style("opacity", 0)
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies

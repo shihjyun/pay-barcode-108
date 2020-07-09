@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { payFormattedData, helperArgs, medianListedTop10, medianOTCTop10, medianListedLast10, medianOTCLast10, industryMedian } from "../stores/PayData108.js";
   import * as d3 from "d3";
+  import * as d3Annotation from 'd3-svg-annotation';
 
   let isMobile = false; //initiate as false
   // device detection
@@ -23,6 +24,7 @@
                      medianOTCTop10: $medianOTCTop10,
                      medianListedLast10: $medianListedLast10,
                      medianOTCLast10: $medianOTCLast10}
+  let companies,x,y
 
   // - data accessor
   const xAccessor = d => d["pay_median_108"]
@@ -50,60 +52,61 @@
       - dimensions.margin.top
       - dimensions.margin.bottom
 
-      const wrapper = d3.select('#canvas')
-        .attr("width", dimensions.width)
-        .attr("height", dimensions.height)
+    const wrapper = d3.select('#canvas')
+      .attr("width", dimensions.width)
+      .attr("height", dimensions.height)
 
-      const bounds = wrapper.append("g")
-      .style("transform", `translate(${
-              dimensions.margin.left
-            }px, ${
-              dimensions.margin.top
-            }px)`)
+    const bounds = wrapper.append("g")
+    .attr("class", "chart-container")
+    .style("transform", `translate(${
+            dimensions.margin.left
+          }px, ${
+            dimensions.margin.top
+          }px)`)
 
-      // - scales
-      const x = d3.scaleLinear()
-        .domain(d3.extent(data, xAccessor))
-        .range([dimensions.margin.left*2, dimensions.boundWidth - dimensions.margin.right])
+    // - scales
+    x = d3.scaleLinear()
+      .domain(d3.extent(data, xAccessor))
+      .range([dimensions.margin.left*2, dimensions.boundWidth - dimensions.margin.right])
 
-      const y = d3.scaleBand()
-        .domain(data.map(yAccessor))
-        .rangeRound([dimensions.margin.top, dimensions.boundHeight - dimensions.margin.bottom])
-        .padding(0.1)
+    y = d3.scaleBand()
+      .domain(data.map(yAccessor))
+      .rangeRound([dimensions.margin.top, dimensions.boundHeight - dimensions.margin.bottom])
+      .padding(0.1)
 
-      // - axis
-      const xAxis = g => g
-        .attr("transform", `translate(0,${dimensions.margin.top})`)
-        .attr("class", "x-axis")
-        .style("opacity", 0)
-        .call(d3.axisTop(x).ticks(null))
-        .call(g => g.selectAll(".tick line")
-                    .clone()
-                    .attr("stroke-opacity", 0.1)
-                    .attr("y2", dimensions.boundHeight - dimensions.margin.bottom - dimensions.margin.top))
-        .call(g => g.selectAll(".domain").remove())
-        .call(g => g.selectAll("text")
-                    .style("font-family", "Noto Sans TC")
-                    .style("font-size", isMobile ? 9 : 15))
-        .call(g => g.selectAll("line:first-child")
-                    .remove())
+    // - axis
+    const xAxis = g => g
+      .attr("transform", `translate(0,${dimensions.margin.top})`)
+      .attr("class", "x-axis")
+      .style("opacity", 0)
+      .call(d3.axisTop(x).ticks(null))
+      .call(g => g.selectAll(".tick line")
+                  .clone()
+                  .attr("stroke-opacity", 0.1)
+                  .attr("y2", dimensions.boundHeight - dimensions.margin.bottom - dimensions.margin.top))
+      .call(g => g.selectAll(".domain").remove())
+      .call(g => g.selectAll("text")
+                  .style("font-family", "Noto Sans TC")
+                  .style("font-size", isMobile ? 9 : 15))
+      .call(g => g.selectAll("line:first-child")
+                  .remove())
 
-      const yAxis = g => g
-        .attr("transform", `translate(${dimensions.margin.left * 2},0)`)
-        .attr("class", "y-axis")
-        .style("opacity", 0)
-        .call(d3.axisLeft(y))
-        .call(g => g.selectAll(".tick line")
-                    .clone()
-                    .attr("stroke-opacity", 0.1)
-                    .attr("x2", dimensions.boundWidth - dimensions.margin.right - dimensions.margin.left))
-        .call(g => g.selectAll(".domain")
-                    .remove())
-        .call(g => g.selectAll("text")
-                    .style("font-family", "Noto Sans TC")
-                    .style("font-size", isMobile ? 10 : 12))
-        .call(g => g.selectAll("line:first-child")
-                    .remove())
+    const yAxis = g => g
+      .attr("transform", `translate(${dimensions.margin.left * 2},0)`)
+      .attr("class", "y-axis")
+      .style("opacity", 0)
+      .call(d3.axisLeft(y))
+      .call(g => g.selectAll(".tick line")
+                  .clone()
+                  .attr("stroke-opacity", 0.1)
+                  .attr("x2", dimensions.boundWidth - dimensions.margin.right - dimensions.margin.left))
+      .call(g => g.selectAll(".domain")
+                  .remove())
+      .call(g => g.selectAll("text")
+                  .style("font-family", "Noto Sans TC")
+                  .style("font-size", isMobile ? 10 : 12))
+      .call(g => g.selectAll("line:first-child")
+                  .remove())
 
     // draw barcode
     bounds.append("g")
@@ -142,16 +145,97 @@
         .attr("height", y.bandwidth())
 
     
-    let companies = d3.selectAll(".company")
+    companies = d3.selectAll(".company")
 
     bounds.append("g")
         .call(xAxis);
 
     bounds.append("g")
-        .call(yAxis);
+        .call(yAxis);    
+
+    // make annotation objects
+    
+    const barCodeSelection = d3.select(".chart-container")
+
+    const annotationsType = d3Annotation.annotationCustomType(
+      d3Annotation.annotationLabel, 
+    {
+      "connector":{"type":"line"},
+      "note":{"align":"center"}}
+    )
+
+
+    const makeAnnotationStep5 = d3Annotation
+      .annotation()
+      .type(annotationsType)
+
+    const makeAnnotationStep6 = d3Annotation
+      .annotation()
+      .type(annotationsType)
+
+    // annotation
+    barCodeSelection
+      .append("g")
+      .attr("class", "step-5-annotation")
+      .call(makeAnnotationStep5.annotations(
+        [
+          {
+            note: {
+              label: "聯詠",
+              wrap: 150
+            },
+            x: x(2398) - 0.75,
+            y: y("半導體業"),
+            dx: isMobile ? 10 : 18,
+            dy: isMobile ? -10 : -18,
+            "color": "#DD5C68"
+          },
+          {
+            note: {
+              label: "原相",
+              wrap: 150
+            },
+            x: x(2092) - 0.75,
+            y: y("半導體業"),
+            dx: isMobile ? 10 : 18,
+            dy: isMobile ? -10 : -18,
+            "color": "#DD5C68"
+          }
+        ]
+      ))
+      .style("font-family", "Noto Sans TC")
+      .style("font-size", isMobile ? 12 : 15)
+      .style("opacity", 0)
+
+
+    barCodeSelection
+      .append("g")
+      .attr("class", "step-6-annotation")
+      .call(makeAnnotationStep6.annotations(
+        [
+          {
+            note: {
+              label: "高野",
+              wrap: 150
+            },
+            x: x(315) - 0.75,
+            y: y("觀光事業"),
+            dx: isMobile ? 10 : 18,
+            dy: isMobile ? -10 : -18,
+            "color": "#DD5C68"
+          }
+        ]
+      ))
+      .style("font-family", "Noto Sans TC")
+      .style("font-size", isMobile ? 12 : 15)
+      .style("opacity", 0)
+
+    d3.selectAll(".annotation-note-label tspan")
+      .attr("dy", "1.5em")
+
 
     // set steop needed value to empty store
-    const AddedArgs = {isMobile, companies, top10List}
+    const AddedArgs = {isMobile, companies, top10List, barCodeSelection}
 
     helperArgs.update(d => {
             return AddedArgs;
