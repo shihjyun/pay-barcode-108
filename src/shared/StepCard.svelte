@@ -1,11 +1,16 @@
 <script>
   export let content;
   export let stepId;
+  export let subTitle;
 </script>
 
 
 <div class="step" data-step={stepId}>
-  <p class="TNL-p">{@html content}</p>
+  <p class="TNL-p">
+  {#if subTitle}
+     <h2>{@html subTitle}</h2>
+  {/if}
+  {@html content}</p>
 </div>
 
 <style>
@@ -19,13 +24,26 @@
     border-block-color: black;
   }
 
+  h2 {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin: 0 0 0.3em 0;
+    z-index: 10;
+    display: block;
+    font-family: 'Noto Sans TC';
+  }
+
   .TNL-p{
     z-index: 10;
     display: block;
-    word-wrap:break-word;
+    word-wrap: break-word;
+    vertical-align: baseline;
+    letter-spacing: .5px;
     margin: 0 auto;
     text-align-last: left;
+    text-align: left;
     padding: 0.8rem;
+    line-height: normal;
     height: auto;
     font-family: 'Noto Sans TC';
     border: #938585 1px solid;

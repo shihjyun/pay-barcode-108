@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { payFormattedData, helperArgs, medianListedTop10, medianOTCTop10, medianListedLast10, medianOTCLast10 } from "../stores/PayData108.js";
+  import { payFormattedData, helperArgs, medianListedTop10, medianOTCTop10, medianListedLast10, medianOTCLast10, industryMedian } from "../stores/PayData108.js";
   import * as d3 from "d3";
 
   let isMobile = false; //initiate as false
@@ -18,6 +18,7 @@
 
   // Configuration - constant value
   const data = $payFormattedData
+  const indMedianData = $industryMedian
   const top10List = {medianListedTop10: $medianListedTop10, 
                      medianOTCTop10: $medianOTCTop10,
                      medianListedLast10: $medianListedLast10,
@@ -74,7 +75,7 @@
       const xAxis = g => g
         .attr("transform", `translate(0,${dimensions.margin.top})`)
         .attr("class", "x-axis")
-        .attr("opacity", 0)
+        .style("opacity", 0)
         .call(d3.axisTop(x).ticks(null))
         .call(g => g.selectAll(".tick line")
                     .clone()
@@ -82,15 +83,15 @@
                     .attr("y2", dimensions.boundHeight - dimensions.margin.bottom - dimensions.margin.top))
         .call(g => g.selectAll(".domain").remove())
         .call(g => g.selectAll("text")
-                    .attr("font-family", "Noto Sans TC")
-                    .attr("font-size", isMobile ? 9 : 15))
+                    .style("font-family", "Noto Sans TC")
+                    .style("font-size", isMobile ? 9 : 15))
         .call(g => g.selectAll("line:first-child")
                     .remove())
 
       const yAxis = g => g
         .attr("transform", `translate(${dimensions.margin.left * 2},0)`)
         .attr("class", "y-axis")
-        .attr("opacity", 0)
+        .style("opacity", 0)
         .call(d3.axisLeft(y))
         .call(g => g.selectAll(".tick line")
                     .clone()
@@ -99,8 +100,8 @@
         .call(g => g.selectAll(".domain")
                     .remove())
         .call(g => g.selectAll("text")
-                    .attr("font-family", "Noto Sans TC")
-                    .attr("font-size", isMobile ? 10 : 12))
+                    .style("font-family", "Noto Sans TC")
+                    .style("font-size", isMobile ? 10 : 12))
         .call(g => g.selectAll("line:first-child")
                     .remove())
 
@@ -114,8 +115,8 @@
       .enter()
         .append("rect")
         .attr("class", "company")
-        .attr("fill", d => d["type"] === "listed" ? "#046EB7" : "#CF7942")
-        .attr("opacity", 0)
+        .style("fill", "#DAD7DA")
+        .style("opacity", 0)
         .attr("id", d => d["公司名稱"])
         .attr("x", d => x(d["pay_median_108"]) - 0.75)
         .attr("y", d => y(d["產業類別"]))
@@ -123,6 +124,23 @@
         .attr("height", y.bandwidth())
       .append("title")
         .text(d => `${d["公司名稱"]} ${(d["pay_median_108"]).toFixed(1)}k ${d["產業類別"]}`)
+
+
+    bounds.append("g")
+        .attr("class", "ind-medians")
+        .selectAll("rect")
+      .data(indMedianData)
+        .enter()
+        .append("rect")
+        .attr("class", "ind-median")
+        .style("fill", "#AB6533")
+        .style("opacity", 0)
+        .attr("id", d => d["產業類別"])
+        .attr("x", d => x(d["median"]) - 0.75)
+        .attr("y", d => y(d["產業類別"]))
+        .attr("width", isMobile ? 1 : 1.5)
+        .attr("height", y.bandwidth())
+
     
     let companies = d3.selectAll(".company")
 
@@ -154,51 +172,5 @@
 <style>
   svg {
     z-index: 2;
-  }
-
-
-  /* css reset */
-  html, body, div, span, applet, object, iframe,
-  h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-  a, abbr, acronym, address, big, cite, code,
-  del, dfn, em, img, ins, kbd, q, s, samp,
-  small, strike, strong, sub, sup, tt, var,
-  b, u, i, center,
-  dl, dt, dd, ol, ul, li,
-  fieldset, form, label, legend,
-  table, caption, tbody, tfoot, thead, tr, th, td,
-  article, aside, canvas, details, embed, 
-  figure, figcaption, footer, header, hgroup, 
-  menu, nav, output, ruby, section, summary,
-  time, mark, audio, video {
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-  }
-  /* HTML5 display-role reset for older browsers */
-  article, aside, details, figcaption, figure, 
-  footer, header, hgroup, menu, nav, section {
-    display: block;
-  }
-  body {
-    line-height: 1;
-  }
-  ol, ul {
-    list-style: none;
-  }
-  blockquote, q {
-    quotes: none;
-  }
-  blockquote:before, blockquote:after,
-  q:before, q:after {
-    content: '';
-    content: none;
-  }
-  table {
-    border-collapse: collapse;
-    border-spacing: 0;
   }
 </style>
