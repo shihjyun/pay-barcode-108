@@ -99,13 +99,13 @@ export const stepInfo = readable([
   {
     step: 4,
     subTitle: false,
-    content: `其中不管是上市還是上櫃公司，都以電子零組件業為大宗，分別有109家及92家。而在產業薪資中位數上，半導體業皆在上市、上櫃榜單中分別以97.8萬、86.4萬拔得頭籌`,
+    content: `其中不管是上市還是上櫃公司，都以電子零件業為大宗，分別有109家及92家。而在產業薪資中位數上，半導體業皆在上市、上櫃榜單中分別以97.8萬、86.4萬拔得頭籌`,
     stepEnterDown: function(...Arg){
 
       Arg[0].companies
         .transition()
         .style("fill", function(d){
-          const checkList = ["電子零組件業", "半導體業"] 
+          const checkList = ["電子零件業", "半導體業"] 
           if (checkList.includes(d["產業類別"])) {
             return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
           } else {
@@ -113,7 +113,7 @@ export const stepInfo = readable([
           }
         })
         .style("opacity", function(d){
-          const checkList = ["電子零組件業", "半導體業"] 
+          const checkList = ["電子零件業", "半導體業"] 
           if (checkList.includes(d["產業類別"])) {
             return 0.7
           } else {
@@ -125,7 +125,7 @@ export const stepInfo = readable([
       Arg[0].companies
         .transition()
         .style("fill", function(d){
-          const checkList = ["電子零組件業", "半導體業"] 
+          const checkList = ["電子零件業", "半導體業"] 
           if (checkList.includes(d["產業類別"])) {
             return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
           } else {
@@ -133,7 +133,7 @@ export const stepInfo = readable([
           }
         })
         .style("opacity", function(d){
-          const checkList = ["電子零組件業", "半導體業"] 
+          const checkList = ["電子零件業", "半導體業"] 
           if (checkList.includes(d["產業類別"])) {
             return 0.7
           } else {
@@ -326,7 +326,7 @@ export const stepInfo = readable([
             return "#DAD7DA"
           }
         })
-        .style("opacity", d["worse_com"] ? 0.7 : 1)
+        .style("opacity", d => d["worse_com"] ? 0.7 : 1)
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
@@ -338,7 +338,7 @@ export const stepInfo = readable([
             return "#DAD7DA"
           }
         })
-        .style("opacity", d["worse_com"] ? 0.7 : 1)
+        .style("opacity", d => d["worse_com"] ? 0.7 : 1)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -357,7 +357,7 @@ export const stepInfo = readable([
             return "#DAD7DA"
           }
         })
-        .style("opacity", d["better_com"] ? 0.7 : 1)
+        .style("opacity", d => d["better_com"] ? 0.7 : 1)
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
@@ -369,7 +369,7 @@ export const stepInfo = readable([
             return "#DAD7DA"
           }
         })
-        .style("opacity", d["better_com"] ? 0.7 : 1)
+        .style("opacity", d => d["better_com"] ? 0.7 : 1)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
