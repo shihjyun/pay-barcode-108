@@ -2,6 +2,7 @@
 	import ScrollamaTemplate from "./shared/ScrollamaTemplate.svelte";
 	import HeaderCover from "./components/HeaderCover.svelte";
 	import HowToRead from "./components/HowToRead.svelte";
+	import InteractiveTool from "./components/InteractiveTool.svelte";
 </script>
 
 <main class="TNL-main">
@@ -18,6 +19,7 @@
 	<h2>圖表怎麼看？</h2>
 	<HowToRead/>
 	<ScrollamaTemplate/>
+	<InteractiveTool />
 </main>
 
 <style>
