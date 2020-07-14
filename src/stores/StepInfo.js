@@ -2,6 +2,12 @@ import { readable } from "svelte/store";
 import * as d3 from "d3";
 import * as d3Annotation from 'd3-svg-annotation';
 
+//color var
+const silentColor = "rgba(205, 202, 202, 0.7)"
+const listedCompanyColor = "#00A2D7"
+const OTCCompanyColor = "#26A697"
+const highlightedRed = "#FF934F"
+
 export const stepInfo = readable([
   {
     step: 1,
@@ -25,7 +31,7 @@ export const stepInfo = readable([
         .transition()
         .delay(500)
         .style("opacity", 1)
-        .style("fill", "#DAD7DA")
+        .style("fill", silentColor)
     },
     stepEnterUp: function(...Arg){
       
@@ -33,7 +39,7 @@ export const stepInfo = readable([
         .transition()
         .delay(500)
         .style("opacity", 1)
-        .style("fill", "#DAD7DA")
+        .style("fill", silentColor)
 
     },
     stepExitUp: function(...Arg){
@@ -52,27 +58,27 @@ export const stepInfo = readable([
       Arg[0].companies
         .transition()
         .style("opacity", 0)
-        .style("fill", "#DAD7DA")
+        .style("fill", silentColor)
     },
     stepExitDown: function(){}
   },
   {
     step: 2,
     subTitle: false,
-    content: `其中<span style="color:#046EB7;">上市公司</span>共有864家`,
+    content: `其中<span style="color:${listedCompanyColor};">上市公司</span>共有864家`,
     stepEnterDown: function(...Arg){
       
       Arg[0].companies
         .transition()
         .style("opacity", 0.7)
-        .style("fill", d => d.type === "listed" ? "#046EB7" : "#DAD7DA")
+        .style("fill", d => d.type === "listed" ? listedCompanyColor : silentColor)
     },
     stepEnterUp: function(...Arg){
 
       Arg[0].companies
         .transition()
         .style("opacity", 0.7)
-        .style("fill", d => d.type === "listed" ? "#046EB7" : "#DAD7DA")
+        .style("fill", d => d.type === "listed" ? listedCompanyColor : silentColor)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -80,18 +86,18 @@ export const stepInfo = readable([
   {
     step: 3,
     subTitle: false,
-    content: `<span style="color:#66C2A5;">上櫃公司</span>則有738家。`,
+    content: `<span style="color:${OTCCompanyColor};">上櫃公司</span>則有738家。`,
     stepEnterDown: function(...Arg){
       
       Arg[0].companies
         .transition()
-        .style("fill", d => d.type === "OTC" ? "#66C2A5" : "#DAD7DA")
+        .style("fill", d => d.type === "OTC" ? OTCCompanyColor : silentColor)
     },
     stepEnterUp: function(...Arg){
 
       Arg[0].companies
         .transition()
-        .style("fill", d => d.type === "OTC" ? "#66C2A5" : "#DAD7DA")
+        .style("fill", d => d.type === "OTC" ? OTCCompanyColor : silentColor)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -107,9 +113,9 @@ export const stepInfo = readable([
         .style("fill", function(d){
           const checkList = ["電子零件業", "半導體業"] 
           if (checkList.includes(d["產業類別"])) {
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", function(d){
@@ -127,9 +133,9 @@ export const stepInfo = readable([
         .style("fill", function(d){
           const checkList = ["電子零件業", "半導體業"] 
           if (checkList.includes(d["產業類別"])) {
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", function(d){
@@ -158,9 +164,9 @@ export const stepInfo = readable([
         .style("fill", function(d){
           const checkList = Arg[0].top10List.medianListedTop10.concat(Arg[0].top10List.medianOTCTop10)
           if (checkList.includes(d["公司名稱"])) {
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", function(d){
@@ -186,9 +192,9 @@ export const stepInfo = readable([
         .style("fill", function(d){
           const checkList = Arg[0].top10List.medianListedTop10.concat(Arg[0].top10List.medianOTCTop10)
           if (checkList.includes(d["公司名稱"])) {
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", function(d){
@@ -221,9 +227,9 @@ export const stepInfo = readable([
         .style("fill", function(d){
           const checkList = Arg[0].top10List.medianListedLast10.concat(Arg[0].top10List.medianOTCLast10)
           if (checkList.includes(d["公司名稱"])) {
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", function(d){
@@ -249,9 +255,9 @@ export const stepInfo = readable([
         .style("fill", function(d){
           const checkList = Arg[0].top10List.medianListedLast10.concat(Arg[0].top10List.medianOTCLast10)
           if (checkList.includes(d["公司名稱"])) {
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", function(d){
@@ -277,11 +283,11 @@ export const stepInfo = readable([
   {
     step: 7,
     subTitle: false,
-    content: `而針對低薪公司，金管會也要求「薪資平均數」低於50萬共135家公司，於資料中一併提出低相關說明，解釋為何薪資為何較低，是否與公司經營績效公司經營績效有關係。`,
+    content: `而針對<span style="color:${highlightedRed};">低薪公司</span>，金管會也要求「薪資平均數」低於50萬共135家公司，於資料中一併提出低相關說明，解釋為何薪資為何較低，是否與公司經營績效公司經營績效有關係。`,
     stepEnterDown: function(...Arg){
       Arg[0].companies
         .transition()
-        .style("fill", d => d["pay_mean_lower_50"] ? "#F7717D" : "#DAD7DA")
+        .style("fill", d => d["pay_mean_lower_50"] ? highlightedRed : silentColor)
 
       d3.select(".step-6-annotation")
         .transition(500)
@@ -290,7 +296,7 @@ export const stepInfo = readable([
     stepEnterUp: function(...Arg){
       Arg[0].companies
         .transition()
-        .style("fill", d => d["pay_mean_lower_50"] ? "#F7717D" : "#DAD7DA")
+        .style("fill", d => d["pay_mean_lower_50"] ? highlightedRed : silentColor)
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -298,16 +304,23 @@ export const stepInfo = readable([
   {
     step: 8,
     subTitle: `佛心公司？`,
-    content: `實務上資產報酬率(ROA)是用來評估公司獲利能力指標之一，可以看出公司運用資產創造利潤的能力。那我們來看看哪些公司在同業中獲利表現較好(ROA較同業高)，但給的薪資相對同業差；哪些公司在同業中獲利表現較差(ROA較同業差)，但給的薪資相對同業好。`,
+    content: `實務上資產報酬率(ROA)是用來評估公司獲利能力指標之一，可以看出公司運用資產創造利潤的能力。那讓我們看看哪些公司在同業中獲利表現較好(ROA較同業高)，但給的薪資相對同業差；哪些公司在同業中獲利表現較差(ROA較同業差)，但給的薪資相對同業好。`,
     stepEnterDown: function(...Arg){
       Arg[0].companies
         .transition()
-        .style("fill",  "#DAD7DA")
+        .style("fill",  silentColor)
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
         .transition()
-        .style("fill",  "#DAD7DA")
+        .style("fill",  silentColor)
+
+      d3.selectAll(".y-axis text")
+        .style("fill", "#333")
+        .style("font-weight", "normal")
+
+      d3.selectAll(".ind-medians")
+        .remove()
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -321,24 +334,57 @@ export const stepInfo = readable([
         .transition()
         .style("fill",  function(d){
           if(d["worse_com"]){
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", d => d["worse_com"] ? 0.7 : 1)
+
+      d3.selectAll(".y-axis text")
+        .style("fill", "#333")
+        .style("font-weight", "normal")
+        .filter(function(){ 
+          return ["化學工業", "文化創意業", "水泥工業"].includes(d3.select(this).text())
+        })
+        .style("fill", "#F9A620")
+        .style("font-weight", "bold")
+
+      Arg[0].bounds.append("g")
+          .attr("class", "ind-medians")
+          .selectAll("rect")
+        .data(Arg[0].indMedianData)
+          .enter()
+          .append("rect")
+          .attr("class", "ind-median")
+          .style("fill", "#F8333C")
+          .style("opacity", 1)
+          .attr("id", d => d["產業類別"])
+          .attr("x", d => Arg[0].x(d["median"]) - 0.75)
+          .attr("y", d => Arg[0].y(d["產業類別"]))
+          .attr("width", Arg[0].isMobile ? 1 : 1.5)
+          .attr("height", Arg[0].y.bandwidth())
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
         .transition()
         .style("fill",  function(d){
           if(d["worse_com"]){
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", d => d["worse_com"] ? 0.7 : 1)
+
+      d3.selectAll(".y-axis text")
+        .style("fill", "#333")
+        .style("font-weight", "normal")
+        .filter(function(){ 
+          return ["化學工業", "文化創意業", "水泥工業"].includes(d3.select(this).text())
+        })
+        .style("fill", "#F9A620")
+        .style("font-weight", "bold")
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -346,30 +392,63 @@ export const stepInfo = readable([
   {
     step: 10,
     subTitle: false,
-    content: `各在上市、上櫃公司中，共有289家在同業中獲利表現較差，但薪資是同業的前段班。從其公司在自己產業中的佔比來看，以電器電纜業(31.3%)、金融保險業(28.6%)及航運業(28.6%)位居前三名。 `,
+    content: `各在上市、上櫃公司中，共有289家在同業中獲利表現較差，但薪資是同業的前段班。從該公司在自己產業中的佔比來看，以電器電纜業(31.3%)、金融保險業(28.6%)及航運業(28.6%)位居前三名。 `,
     stepEnterDown: function(...Arg){
       Arg[0].companies
         .transition()
         .style("fill",  function(d){
           if(d["better_com"]){
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", d => d["better_com"] ? 0.7 : 1)
+
+      d3.selectAll(".y-axis text")
+        .style("fill", "#333")
+        .style("font-weight", "normal")
+        .filter(function(){ 
+          return ["電器電纜", "金融保險業", "航運業"].includes(d3.select(this).text())
+        })
+        .style("fill", "#F9A620")
+        .style("font-weight", "bold")
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
         .transition()
         .style("fill",  function(d){
           if(d["better_com"]){
-            return d["type"] === "listed" ? "#046EB7" : "#66C2A5"
+            return d["type"] === "listed" ? listedCompanyColor : OTCCompanyColor
           } else {
-            return "#DAD7DA"
+            return silentColor
           }
         })
         .style("opacity", d => d["better_com"] ? 0.7 : 1)
+
+      d3.selectAll(".y-axis text")
+        .style("fill", "#333")
+        .style("font-weight", "normal")
+        .filter(function(){ 
+          return ["電器電纜", "金融保險業", "航運業"].includes(d3.select(this).text())
+        })
+        .style("fill", "#F9A620")
+        .style("font-weight", "bold")
+
+      Arg[0].bounds.append("g")
+        .attr("class", "ind-medians")
+        .selectAll("rect")
+      .data(Arg[0].indMedianData)
+        .enter()
+        .append("rect")
+        .attr("class", "ind-median")
+        .style("fill", "#F8333C")
+        .style("opacity", 1)
+        .attr("id", d => d["產業類別"])
+        .attr("x", d => Arg[0].x(d["median"]) - 0.75)
+        .attr("y", d => Arg[0].y(d["產業類別"]))
+        .attr("width", Arg[0].isMobile ? 1 : 1.5)
+        .attr("height", Arg[0].y.bandwidth())
     },
     stepExitUp: function(){},
     stepExitDown: function(){}
@@ -377,9 +456,20 @@ export const stepInfo = readable([
   {
     step: 11,
     subTitle: false,
-    content: `結論`,
-    stepEnterDown: function(...Arg){},
-    stepEnterUp: function(...Arg){},
+    content: `由此可知，除比較產業外，知道公司的薪水是否在產業中有競爭力也很重要。最後，大家可以透過下方查詢框，搜索上市櫃公司的薪資在該產業中排名如何？是否有足夠的競爭力？`,
+    stepEnterDown: function(...Arg){
+      d3.selectAll(".y-axis text")
+        .style("fill", "#333")
+        .style("font-weight", "normal")
+
+      Arg[0].companies
+        .transition()
+        .style("fill",  silentColor)
+
+      d3.selectAll(".ind-medians")
+        .remove()
+    },
+    stepEnterUp: function(){},
     stepExitUp: function(){},
     stepExitDown: function(){}
   }  

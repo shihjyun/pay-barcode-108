@@ -118,7 +118,7 @@
       .enter()
         .append("rect")
         .attr("class", "company")
-        .style("fill", "#DAD7DA")
+        .style("fill", "rgba(205, 202, 202, 0.7)")
         .style("opacity", 0)
         .attr("id", d => d["公司名稱"])
         .attr("x", d => x(d["pay_median_108"]) - 0.75)
@@ -127,22 +127,6 @@
         .attr("height", y.bandwidth())
       .append("title")
         .text(d => `${d["公司名稱"]} ${(d["pay_median_108"]).toFixed(1)}k ${d["產業類別"]}`)
-
-
-    bounds.append("g")
-        .attr("class", "ind-medians")
-        .selectAll("rect")
-      .data(indMedianData)
-        .enter()
-        .append("rect")
-        .attr("class", "ind-median")
-        .style("fill", "#AB6533")
-        .style("opacity", 0)
-        .attr("id", d => d["產業類別"])
-        .attr("x", d => x(d["median"]) - 0.75)
-        .attr("y", d => y(d["產業類別"]))
-        .attr("width", isMobile ? 1 : 1.5)
-        .attr("height", y.bandwidth())
 
     
     companies = d3.selectAll(".company")
@@ -204,7 +188,7 @@
         ]
       ))
       .style("font-family", "Noto Sans TC")
-      .style("font-size", isMobile ? 12 : 15)
+      .style("font-size", isMobile ? "12 !important" : "15 !important")
       .style("opacity", 0)
 
 
@@ -226,16 +210,21 @@
           }
         ]
       ))
-      .style("font-family", "Noto Sans TC")
-      .style("font-size", isMobile ? 12 : 15)
       .style("opacity", 0)
 
+    d3.selectAll(".annotation-note-label")
+      .style("font-size", isMobile ? "15" : "20")
+
     d3.selectAll(".annotation-note-label tspan")
-      .attr("dy", "1.5em")
+      .style("font-size", isMobile ? "15" : "20")
+      .style("font-family", "Noto Sans TC")
+      .attr("dy", "16em")
+      
 
 
     // set steop needed value to empty store
-    const AddedArgs = {isMobile, companies, top10List, barCodeSelection}
+    const AddedArgs = {isMobile, companies, top10List, barCodeSelection,
+                       x, y, indMedianData, bounds}
 
     helperArgs.update(d => {
             return AddedArgs;
@@ -256,5 +245,8 @@
 <style>
   svg {
     z-index: 2;
+  }
+  .annotation-note-label text{
+    font-size: 20px;
   }
 </style>
