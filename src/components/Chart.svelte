@@ -27,7 +27,7 @@
   let companies,x,y
 
   // - data accessor
-  const xAccessor = d => d["pay_median_108"]
+  const xAccessor = d => d["pay_median_108"]/10
   const yAccessor = d => d["產業類別"]
 
   // draw
@@ -121,12 +121,12 @@
         .style("fill", "rgba(205, 202, 202, 0.7)")
         .style("opacity", 0)
         .attr("id", d => d["公司名稱"])
-        .attr("x", d => x(d["pay_median_108"]) - 0.75)
+        .attr("x", d => x(d["pay_median_108"]/10) - 0.75)
         .attr("y", d => y(d["產業類別"]))
         .attr("width", isMobile ? 1 : 1.5)
         .attr("height", y.bandwidth())
       .append("title")
-        .text(d => `${d["公司名稱"]} ${(d["pay_median_108"]).toFixed(1)}k ${d["產業類別"]}`)
+        .text(d => `${d["公司名稱"]} ${(d["pay_median_108"]/10).toFixed(1)}萬 ${d["產業類別"]}`)
 
     
     companies = d3.selectAll(".company")

@@ -3,16 +3,16 @@ import * as d3 from "d3";
 import * as d3Annotation from 'd3-svg-annotation';
 
 //color var
-const silentColor = "rgba(205, 202, 202, 0.7)"
+const silentColor = "#DCDADA"
 const listedCompanyColor = "#00A2D7"
-const OTCCompanyColor = "#26A697"
-const highlightedRed = "#FF934F"
+const OTCCompanyColor = "#FF934F"
+const highlightedRed = "#F7717D"
 
 export const stepInfo = readable([
   {
     step: 1,
     subTitle: false,
-    content: `在108年，台灣共有1602家上市櫃公司公開非主管薪資中位數。`,
+    content: `在2019年，台灣共有1602家上市櫃公司公開非主管薪資中位數。`,
     stepEnterDown: function(...Arg){
       d3.selectAll(".x-axis")
         .transition(500)
@@ -70,14 +70,12 @@ export const stepInfo = readable([
       
       Arg[0].companies
         .transition()
-        .style("opacity", 0.7)
         .style("fill", d => d.type === "listed" ? listedCompanyColor : silentColor)
     },
     stepEnterUp: function(...Arg){
 
       Arg[0].companies
         .transition()
-        .style("opacity", 0.7)
         .style("fill", d => d.type === "listed" ? listedCompanyColor : silentColor)
     },
     stepExitUp: function(){},
@@ -118,14 +116,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", function(d){
-          const checkList = ["電子零件業", "半導體業"] 
-          if (checkList.includes(d["產業類別"])) {
-            return 0.7
-          } else {
-            return 1
-          }
-        })
+        .style("opacity", 1)
     },
     stepEnterUp: function(...Arg){
       Arg[0].companies
@@ -138,14 +129,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", function(d){
-          const checkList = ["電子零件業", "半導體業"] 
-          if (checkList.includes(d["產業類別"])) {
-            return 0.7
-          } else {
-            return 1
-          }
-        })
+        .style("opacity", 1)
 
       d3.selectAll(".step-5-annotation")
         .style("opacity", 0)
@@ -169,14 +153,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", function(d){
-          const checkList = Arg[0].top10List.medianListedTop10.concat(Arg[0].top10List.medianOTCTop10)
-          if (checkList.includes(d["產業類別"])) {
-            return 0.7
-          } else {
-            return 1
-          }
-        })
+        .style("opacity", 1)
         
         d3.select(".step-5-annotation")
           .transition(500)
@@ -197,14 +174,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", function(d){
-          const checkList = Arg[0].top10List.medianListedTop10.concat(Arg[0].top10List.medianOTCTop10)
-          if (checkList.includes(d["產業類別"])) {
-            return 0.7
-          } else {
-            return 1
-          }
-        })
+        .style("opacity", 1)
 
       d3.select(".step-5-annotation")
         .transition(500)
@@ -232,14 +202,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", function(d){
-          const checkList = Arg[0].top10List.medianListedLast10.concat(Arg[0].top10List.medianOTCLast10)
-          if (checkList.includes(d["產業類別"])) {
-            return 0.7
-          } else {
-            return 1
-          }
-        })
+        .style("opacity", 1)
 
       d3.select(".step-6-annotation")
         .transition(500)
@@ -260,14 +223,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", function(d){
-          const checkList = Arg[0].top10List.medianListedLast10.concat(Arg[0].top10List.medianOTCLast10)
-          if (checkList.includes(d["產業類別"])) {
-            return 0.7
-          } else {
-            return 1
-          }
-        })
+        .style("opacity", 1)
 
       d3.select(".step-6-annotation")
         .transition(500)
@@ -339,7 +295,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", d => d["worse_com"] ? 0.7 : 1)
+        .style("opacity", 1)
 
       d3.selectAll(".y-axis text")
         .style("fill", "#333")
@@ -347,7 +303,7 @@ export const stepInfo = readable([
         .filter(function(){ 
           return ["化學工業", "文化創意業", "水泥工業"].includes(d3.select(this).text())
         })
-        .style("fill", "#F9A620")
+        .style("fill", highlightedRed)
         .style("font-weight", "bold")
 
       Arg[0].bounds.append("g")
@@ -357,10 +313,10 @@ export const stepInfo = readable([
           .enter()
           .append("rect")
           .attr("class", "ind-median")
-          .style("fill", "#F8333C")
+          .style("fill", "#261B1B")
           .style("opacity", 1)
           .attr("id", d => d["產業類別"])
-          .attr("x", d => Arg[0].x(d["median"]) - 0.75)
+          .attr("x", d => Arg[0].x(d["median"]/10) - 0.75)
           .attr("y", d => Arg[0].y(d["產業類別"]))
           .attr("width", Arg[0].isMobile ? 1 : 1.5)
           .attr("height", Arg[0].y.bandwidth())
@@ -375,7 +331,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", d => d["worse_com"] ? 0.7 : 1)
+        .style("opacity", 1)
 
       d3.selectAll(".y-axis text")
         .style("fill", "#333")
@@ -383,7 +339,7 @@ export const stepInfo = readable([
         .filter(function(){ 
           return ["化學工業", "文化創意業", "水泥工業"].includes(d3.select(this).text())
         })
-        .style("fill", "#F9A620")
+        .style("fill", highlightedRed)
         .style("font-weight", "bold")
     },
     stepExitUp: function(){},
@@ -403,7 +359,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", d => d["better_com"] ? 0.7 : 1)
+        .style("opacity", d => 1)
 
       d3.selectAll(".y-axis text")
         .style("fill", "#333")
@@ -411,7 +367,7 @@ export const stepInfo = readable([
         .filter(function(){ 
           return ["電器電纜", "金融保險業", "航運業"].includes(d3.select(this).text())
         })
-        .style("fill", "#F9A620")
+        .style("fill", highlightedRed)
         .style("font-weight", "bold")
     },
     stepEnterUp: function(...Arg){
@@ -424,7 +380,7 @@ export const stepInfo = readable([
             return silentColor
           }
         })
-        .style("opacity", d => d["better_com"] ? 0.7 : 1)
+        .style("opacity", 1)
 
       d3.selectAll(".y-axis text")
         .style("fill", "#333")
@@ -432,7 +388,7 @@ export const stepInfo = readable([
         .filter(function(){ 
           return ["電器電纜", "金融保險業", "航運業"].includes(d3.select(this).text())
         })
-        .style("fill", "#F9A620")
+        .style("fill", highlightedRed)
         .style("font-weight", "bold")
 
       Arg[0].bounds.append("g")
@@ -442,10 +398,10 @@ export const stepInfo = readable([
         .enter()
         .append("rect")
         .attr("class", "ind-median")
-        .style("fill", "#F8333C")
+        .style("fill", "#261B1B")
         .style("opacity", 1)
         .attr("id", d => d["產業類別"])
-        .attr("x", d => Arg[0].x(d["median"]) - 0.75)
+        .attr("x", d => Arg[0].x(d["median"])/10 - 0.75)
         .attr("y", d => Arg[0].y(d["產業類別"]))
         .attr("width", Arg[0].isMobile ? 1 : 1.5)
         .attr("height", Arg[0].y.bandwidth())

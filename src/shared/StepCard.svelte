@@ -47,7 +47,7 @@
     height: auto;
     font-family: 'Noto Sans TC';
     border: #938585 1px solid;
-    background: rgba(247, 247, 247, 0.6);
+    background: rgba(247, 247, 247, 1);
     -webkit-transform: translate3d(0,0,0);
   }
 
