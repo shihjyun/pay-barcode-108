@@ -30,7 +30,7 @@
     margin: 0 0 0.3em 0;
     z-index: 10;
     display: block;
-    font-family: 'Noto Sans TC';
+    font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'San Serif';
   }
 
   .TNL-p{
@@ -45,7 +45,7 @@
     padding: 0.8rem;
     line-height: normal;
     height: auto;
-    font-family: 'Noto Sans TC';
+    font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'San Serif';
     border: #938585 1px solid;
     background: rgba(247, 247, 247, 1);
     -webkit-transform: translate3d(0,0,0);
@@ -53,7 +53,7 @@
 
   @media screen and (max-width: 1023px) {
   .TNL-p{
-    font-size: 0.8rem;
+    font-size: 0.9rem;
   }
 
   .step{

@@ -14,8 +14,16 @@
 <style>
   div{
     margin-top: 0.5%;
+    margin-bottom: 0.5%;
   }
   a{
     padding: 0 0.8%;
+  }
+
+  @media (max-width: 768px) {
+    div{
+      margin-top: 2%;
+      margin-bottom: 2%;
+    }
   }
 </style>

@@ -33,7 +33,6 @@
       debug: false,
     })
     .onStepEnter(response => {
-
       response.direction === 'down' ? 
         $stepInfo[response.index].stepEnterDown(helperArg) : 
         $stepInfo[response.index].stepEnterUp(helperArg)

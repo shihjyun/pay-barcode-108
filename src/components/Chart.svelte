@@ -78,7 +78,7 @@
     const xAxis = g => g
       .attr("transform", `translate(0,${dimensions.margin.top})`)
       .attr("class", "x-axis")
-      .style("opacity", 0)
+      .style("opacity", 1)
       .call(d3.axisTop(x).ticks(null))
       .call(g => g.selectAll(".tick line")
                   .clone()
@@ -86,7 +86,7 @@
                   .attr("y2", dimensions.boundHeight - dimensions.margin.bottom - dimensions.margin.top))
       .call(g => g.selectAll(".domain").remove())
       .call(g => g.selectAll("text")
-                  .style("font-family", "Noto Sans TC")
+                  .style("font-family", "'Noto Sans TC', 'Microsoft JhengHei', 'San Serif'")
                   .style("font-size", isMobile ? 9 : 15))
       .call(g => g.selectAll("line:first-child")
                   .remove())
@@ -94,7 +94,7 @@
     const yAxis = g => g
       .attr("transform", `translate(${dimensions.margin.left * 2},0)`)
       .attr("class", "y-axis")
-      .style("opacity", 0)
+      .style("opacity", 1)
       .call(d3.axisLeft(y))
       .call(g => g.selectAll(".tick line")
                   .clone()
@@ -103,7 +103,7 @@
       .call(g => g.selectAll(".domain")
                   .remove())
       .call(g => g.selectAll("text")
-                  .style("font-family", "Noto Sans TC")
+                  .style("font-family", "'Noto Sans TC', 'Microsoft JhengHei', 'San Serif'")
                   .style("font-size", isMobile ? 10 : 12))
       .call(g => g.selectAll("line:first-child")
                   .remove())
@@ -118,7 +118,7 @@
       .enter()
         .append("rect")
         .attr("class", "company")
-        .style("fill", "rgba(205, 202, 202, 0.7)")
+        .style("fill", "#DCDADA")
         .style("opacity", 0)
         .attr("id", d => d["公司名稱"])
         .attr("x", d => x(d["pay_median_108"]/10) - 0.75)
@@ -168,27 +168,27 @@
               label: "聯詠",
               wrap: 150
             },
-            x: x(2398) - 0.75,
+            x: x(2398/10)- 0.75,
             y: y("半導體業"),
             dx: isMobile ? 10 : 18,
             dy: isMobile ? -10 : -18,
-            "color": "#DD5C68"
+            "color": "#00A2D7"
           },
           {
             note: {
               label: "原相",
               wrap: 150
             },
-            x: x(2092) - 0.75,
+            x: x(2092/10) - 0.75,
             y: y("半導體業"),
             dx: isMobile ? 10 : 18,
             dy: isMobile ? -10 : -18,
-            "color": "#DD5C68"
+            "color": "#FF934F"
           }
         ]
       ))
-      .style("font-family", "Noto Sans TC")
-      .style("font-size", isMobile ? "12 !important" : "15 !important")
+      .style("font-family", "'Noto Sans TC', 'Microsoft JhengHei', 'San Serif'")
+      .style("font-size", isMobile ? "14" : "20")
       .style("opacity", 0)
 
 
@@ -202,23 +202,34 @@
               label: "高野",
               wrap: 150
             },
-            x: x(315) - 0.75,
+            x: x(315/10) - 0.75,
             y: y("觀光事業"),
             dx: isMobile ? 10 : 18,
             dy: isMobile ? -10 : -18,
-            "color": "#DD5C68"
+            "color": "#FF934F"
+          },
+          {
+            note: {
+              label: "興泰",
+              wrap: 150
+            },
+            x: x(331/10) - 0.75,
+            y: y("食品工業"),
+            dx: isMobile ? 10 : 18,
+            dy: isMobile ? -10 : -18,
+            "color": "#00A2D7"
           }
         ]
       ))
       .style("opacity", 0)
 
     d3.selectAll(".annotation-note-label")
-      .style("font-size", isMobile ? "15" : "20")
+      .style("font-size", isMobile ? "14" : "20")
 
     d3.selectAll(".annotation-note-label tspan")
-      .style("font-size", isMobile ? "15" : "20")
-      .style("font-family", "Noto Sans TC")
-      .attr("dy", "16em")
+      .style("font-size", isMobile ? "14" : "20")
+      .style("font-family", "'Noto Sans TC', 'Microsoft JhengHei', 'San Serif'")
+      .attr("dy", isMobile ? "24em" : "15.5em")
       
 
 

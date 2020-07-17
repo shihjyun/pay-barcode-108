@@ -2,11 +2,41 @@
   import { onMount } from "svelte";
   import Select from "svelte-select";
   import ShareBar from "../components/ShareBox.svelte"
-  import { highlightedCompany, selectedCompany } from "../stores/InteractiveParameter.js";
+  import { highlightedCompany, selectedCompany, selectBoxMode } from "../stores/InteractiveParameter.js";
 
 
-  // async search
-  const getSelectionLabel = (option) => option.name;
+  // detect mobile OS system
+  function getMobileOperatingSystem() {
+  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+
+      // Windows Phone must come first because its UA also contains "Android"
+    if (/windows phone/i.test(userAgent)) {
+        return "Windows Phone";
+    }
+
+    if (/android/i.test(userAgent)) {
+        return "Android";
+    }
+
+    if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        return "iOS";
+    }
+
+    return "unknown";
+  }
+
+  const mobileSystem = getMobileOperatingSystem()
+
+  // detect resizing 
+  window.addEventListener("resize", function(event){
+    if ($selectBoxMode) {
+      if (mobileSystem === "Android") {
+      window.scrollTo({top: document.querySelector("#tnl-svelte-webapp").clientHeight - 350,
+                       left: 0,
+                       behavior: 'auto'})
+      }
+    }
+  })
 
   // select box setting
   let inputStyles = 'border-color: #E42F8C; border-style: solid; border-width: 0 0 2px 0;'
@@ -36,14 +66,14 @@
               {selectedValue}
               isClearable={true}
               noOptionsMessage="該公司不在清單中"
-              on:select="{(e) => handleSelectedCompany(e)}">
+              on:select = "{(e) => handleSelectedCompany(e)}">
               </Select>
     </div>
   </div>
 </div>
 <img src={`https://datastore.thenewslens.com/infographic/pay-median-108/assets/og_cover/pay108-${$selectedCompany}.jpg`} alt="">
 <div class="interactive-panel">
-  <h3>分享薪資條碼</h3>
+  <h3>把薪資條碼分享給朋友</h3>
 </div>
 <ShareBar {shareUrl}/>
 <!-- {#await fetchImage}
@@ -59,7 +89,7 @@
 <style>
 h3{
   display: inline-block;
-  font-family: 'Noto Sans TC';
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'San Serif';
   font-size: 1.2em;
   margin-block-start: 1em;
   margin-block-end: 0em;
@@ -68,7 +98,7 @@ h3{
   font-weight: normal;
 }
 .select-theme{
-  font-family: 'Noto Sans TC';
+  font-family: 'Noto Sans TC', 'Microsoft JhengHei', 'San Serif';
   width: 13%;
   margin: 0 auto;
 }

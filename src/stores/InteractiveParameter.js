@@ -5,3 +5,6 @@ export const highlightedCompany = readable([{"value":"台泥","label":"台泥"},
 ) 
 
 export let selectedCompany = writable("請輸入公司名稱");
+
+
+export let selectBoxMode = writable(false);
