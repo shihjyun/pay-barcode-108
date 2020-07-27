@@ -71,7 +71,7 @@
     </div>
   </div>
 </div>
-<img src={`https://datastore.thenewslens.com/infographic/pay-median-108/assets/og_cover/pay108-${$selectedCompany}.jpg`} alt="">
+<img src={`https://datastore.thenewslens.com/infographic/pay-median-108/assets/og-img/pay108-${$selectedCompany}.jpg`} alt="">
 <div class="interactive-panel">
   <h3>把薪資條碼分享給朋友</h3>
 </div>
